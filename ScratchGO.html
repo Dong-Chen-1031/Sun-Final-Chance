@@ -34,20 +34,20 @@
     <meta name="theme-color" content="##ffab19">
     <!-- <script src="./ScratchGO_files/api.js.下載" type="text/javascript" charset="UTF-8" gapi_processed="true"></script> -->
     <script>
-        document.getElementById("frame").onload = function() {
-            // 取得 iframe 中的 document 物件
-            var iframeDocument = document.getElementById("frame").contentDocument;
-            var inputElement = iframeDocument.getElementByTagName("canvas");
+        // document.getElementById("frame").onload = function() {
+        //     // 取得 iframe 中的 document 物件
+        //     var iframeDocument = document.getElementById("frame").contentDocument;
+        //     var inputElement = iframeDocument.getElementByTagName("canvas");
 
-            // 模擬鍵盤輸入
+        //     // 模擬鍵盤輸入
             
-        };
+        // };
         function KeyboardInput_(text) {
                 // 假設要模擬的輸入內容為 "Hello World!"
                 // 取得 iframe 中的 input 元素，假設它有 id 為 "myInput"
                 console.log(text);
                 let iframeDocument = document.getElementById("frame").contentWindow.document;
-                let inputElement = iframeDocument.getElementByTagName("canvas");
+                let inputElement = iframeDocument.getElementsByTagName("canvas");
 
                 // let inputElement=document.getElementById("frame")
                 let keyCode = text.charCodeAt(0);
@@ -64,7 +64,7 @@
                 // 取得 iframe 中的 input 元素，假設它有 id 為 "myInput"
 
                 let iframeDocument = document.getElementById("frame").contentWindow.document;
-                let inputElement = iframeDocument.getElementByTagName("canvas");
+                let inputElement = iframeDocument.getElementsByTagName("canvas");
 
 
                 // let inputElement=document.getElementById("frame")    
