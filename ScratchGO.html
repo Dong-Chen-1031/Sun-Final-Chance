@@ -47,7 +47,7 @@
                 // 取得 iframe 中的 input 元素，假設它有 id 為 "myInput"
                 console.log(text);
                 let iframeDocument = document.getElementById("frame").contentWindow.document;
-                let inputElement = iframeDocument.getElementsByTagName("canvas");
+                let inputElement = iframeDocument.getElementsByTagName("canvas")[0];
 
                 // let inputElement=document.getElementById("frame")
                 let keyCode = text.charCodeAt(0);
@@ -64,7 +64,7 @@
                 // 取得 iframe 中的 input 元素，假設它有 id 為 "myInput"
 
                 let iframeDocument = document.getElementById("frame").contentWindow.document;
-                let inputElement = iframeDocument.getElementsByTagName("canvas");
+                let inputElement = iframeDocument.getElementsByTagName("canvas")[0];
 
 
                 // let inputElement=document.getElementById("frame")    
