@@ -1,0 +1,494 @@
+const firebaseApp = firebase.initializeApp({
+  apiKey: "AIzaSyDo4u3VyZfVaeFoJpmYJZOaWeXfbQ_AWpk",
+  authDomain: "scratchgo-test-project.firebaseapp.com",
+  projectId: "scratchgo-test-project",
+  storageBucket: "scratchgo-test-project.appspot.com",
+  messagingSenderId: "46492695973",
+  appId: "1:46492695973:web:0194fa3f8462cee3067c4c",
+  measurementId: "G-GN7MND0NBM"
+});
+
+const db = firebaseApp.firestore();
+const auth = firebaseApp.auth();
+let PopularList = document.getElementById("PopularList");
+let LatestList = document.getElementById("LatestList");
+let DiveList = document.getElementById("DiveList");
+let SearchList = document.getElementById("SearchList");
+let FavoriteList = document.getElementById("FavoriteList");
+let SearchListContainer = document.getElementById("SearchListContainer");
+let refreshGames = document.getElementById("refreshGames");
+let AccountIconPlaceholder = document.getElementById("AccountIconPlaceholder");
+let LoggedInPanel = document.getElementById("LoggedInPanel");
+var AllGamesList = [];
+// Initialize the FirebaseUI Widget using Firebase.
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+var UserName;
+var ListOfFavorites;
+var UID;
+
+ui.start('#firebaseui-auth-container', {
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  ],
+  // Other config options...
+});
+
+var uiConfig = {
+  callbacks: {
+    signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+      // User successfully signed in.
+      if (authResult.user) {
+        handleSignedInUser(authResult.user);
+      }
+      // do not redirect
+      return false;
+    },
+    uiShown: function() {
+      // The widget is rendered.
+      // Hide the loader.
+      document.getElementById('loader').style.display = 'none';
+    }
+  },
+  // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+  signInFlow: 'popup',
+  signInOptions: [
+    // Leave the lines as is for the providers you want to offer your users.
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    firebase.auth.EmailAuthProvider.PROVIDER_ID,
+  ],
+  // Terms of service url.
+  tosUrl: '<your-tos-url>',
+  // Privacy policy url.
+  privacyPolicyUrl: '<your-privacy-policy-url>'
+};
+
+// The start method will wait until the DOM is loaded.
+ui.start('#firebaseui-auth-container', uiConfig);
+var user = firebase.auth().currentUser;
+
+/**
+ * Displays the UI for a signed in user.
+ * @param {!firebase.User} user
+ */
+var handleSignedInUser = function(user) {
+  console.log("Non annoymous user signed in.");
+  UID = user.uid;
+  document.getElementById('LoggedInPanel').style.display = 'block';
+  document.getElementById('LoggedOutPanel').style.display = 'none';
+  document.getElementById('name').textContent = user.displayName;
+  UserName = user.displayName;
+  if (user.photoURL) {
+    var photoURL = user.photoURL;
+    // Append size to the photo URL for Google hosted images to avoid requesting
+    // the image with its original resolution (using more bandwidth than needed)
+    // when it is going to be presented in smaller size.
+    if ((photoURL.indexOf('googleusercontent.com') != -1) ||
+        (photoURL.indexOf('ggpht.com') != -1)) {
+      photoURL = photoURL + '?sz=' +
+          document.getElementById('photo').clientHeight;
+    }
+    document.getElementById('photo').src = photoURL;
+    document.getElementById('photo').style.display = 'block';
+  } else {
+    document.getElementById('photo').style.display = 'none';
+  }
+  UpdateFavoriteList(UID);
+  LoadControls();
+};
+
+// Displays the UI for a signed out user.
+var handleSignedOutUser = function() {
+  UID = undefined;
+  document.getElementById('LoggedInPanel').style.display = 'none';
+  document.getElementById('LoggedOutPanel').style.display = 'block';
+  ui.start('#firebaseui-auth-container', {
+    signInOptions: [
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    ],
+    // Other config options...
+  });
+  ClearFavoriteList();
+  LoadControls();
+};
+
+function UpdateFavoriteList(UID){
+  var docRef = db.collection("Users").doc(UID);
+  document.getElementById("FavoriteTitle").innerHTML = "Welcome back!"
+  docRef.get().then((doc) => {
+    if (doc.exists) {
+      var FavoritedGames = [];
+      var ListOfFavorites = doc.data().Favorites;
+      Object.entries(ListOfFavorites).forEach(([key, value]) => {
+        db.collection("GameViews").doc(value).get()
+        .then((data) =>{
+          FavoritedGames.push({...data.data(), id: value})
+          PopulateListUI(FavoritedGames, FavoriteList);
+        })
+      })
+      if(ListOfFavorites.includes(CurrentGameID)){
+        FavoriteBtn.src = "svg/heart.svg";
+        isFavorite = true;
+      }else{
+        FavoriteBtn.src = "svg/heart outline.svg";
+        isFavorite = false;
+      }
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+      addNewUser(UID);
+    }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+  });
+}
+
+function ClearFavoriteList(){
+  FavoriteList.textContent = '';
+  document.getElementById("FavoriteTitle").innerHTML = "Log in to save your favorite games here!"
+}
+
+// Listen to change in auth state so it displays the correct UI for when
+// the user is signed in or not.
+firebase.auth().onAuthStateChanged(function(user) {
+  user ? handleSignedInUser(user) : handleSignedOutUser();
+});
+
+function SaveControls(keySettings){
+  console.log(CurrentGameID, keySettings);
+  if(UID != undefined){
+    console.log(UID)
+    // save game control to account
+    db.collection("Users").doc(UID).collection("GameData").doc(CurrentGameID).set({
+      Control: keySettings
+    })
+    .then(() => {
+      console.log("Document successfully written!");
+    })
+    .catch((error) => {
+        console.error("Error writing document: ", error);
+    });
+    }else{
+    // save game control locally
+    SaveLocalControl(keySettings);
+  }
+}
+
+function LoadControls(){
+  if(UID != undefined){
+    // load from account
+    db.collection("Users").doc(UID).collection("GameData").doc(CurrentGameID).get()
+    .then((doc) => {
+      if (doc.exists) {
+          LoadMappingDescription(doc.data().Control);
+      } else {
+          // loads default control
+          if(OfficialControl == false){
+            LoadMappingDescription(["ArrowUp", "ArrowLeft", "ArrowRight", "b", "ArrowDown", "a"]);
+          }
+      }
+  }).catch((error) => {
+      console.log("Error getting document:", error);
+  });
+  }else{
+    // load from local storage
+    if(localStorage.getItem(CurrentGameID) != null){
+      LoadMappingDescription(JSON.parse(localStorage.getItem(CurrentGameID)));
+    }else{
+      if(OfficialControl == false){
+        LoadMappingDescription(["ArrowUp", "ArrowLeft", "ArrowRight", "b", "ArrowDown", "a"]);
+      }
+    }
+  }
+}
+
+function UpdateGames(){
+  // start refreshing arrow
+  refreshGames.classList.add("rotating");
+
+  // dive back in games -> fetch local history files in a for-loop style
+  var localHistory = [];
+  Object.entries(JSON.parse(localStorage.getItem('PlayedGames'))).forEach(([key, value]) => {
+    db.collection('GameViews').doc(value).get()
+    .then((data) =>{
+      localHistory.push({...data.data(), id: value})
+      localHistory = localHistory.filter(data => data.author != undefined)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      });
+  }); 
+
+  // popular games -> top 50 sorted by views
+  db.collection('GameViews').orderBy("Views", "desc").limit(50).get()
+    .then((data) =>{
+        const ExtractedData = data.docs.map((item) => {
+          return {...item.data(), id: item.id}
+        });
+        if(PopularList.classList.contains("seeAllList")){
+          PopulateListUI(ExtractedData, PopularList);
+        }else{
+          PopulateListUI(ExtractedData.slice(0,5), PopularList);
+        }
+        // update dive back in list here lol
+        if(DiveList.classList.contains("seeAllList")){
+          PopulateListUI(localHistory, DiveList);
+        }else{
+          PopulateListUI(localHistory.slice(0, 5), DiveList);
+        }
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+    });
+
+  // latest games -> top 50 sorted by created date
+  db.collection('GameViews').orderBy("created", "desc").limit(50).get()
+    .then((data) =>{
+        const ExtractedData = data.docs.map((item) => {
+          return {...item.data(), id: item.id}
+        });
+        if(LatestList.classList.contains("seeAllList")){
+          PopulateListUI(ExtractedData, LatestList);
+        }else{
+          PopulateListUI(ExtractedData.slice(0, 5), LatestList);
+        }
+        // stop refreshing arrow
+        refreshGames.classList.remove("rotating");
+    })
+    .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorMessage);
+    });
+}
+
+function addView(scratchData){
+  db.collection('GameViews').doc(scratchData.id.toString()).get()
+  .then((data) =>{
+    if(data.data() == undefined){
+      if(scratchData != ''){
+        console.log("Scratch data does not currently exist in data, adding now...")
+        addNewGame(scratchData)
+      }else{
+        console.log("Scratch data was not provided")
+      }
+    }else{
+      const extractedData = {...data.data(), id: scratchData.id}
+      var views = 0
+      if(extractedData.Views){views = extractedData.Views}
+      console.log(scratchData.title, "found with", views, "views")
+      db.collection('GameViews').doc(scratchData.id.toString()).update({ Views: views + 1 })
+    }
+  })
+}
+
+function addNewGame(ScratchData){
+  db.collection('GameViews').doc(ScratchData.id.toString()).set({
+    title: ScratchData.title,
+    Views: 1,
+    Thumbnail: ScratchData.image,
+    author: ScratchData.author.username,
+    authorImg: data.author.profile.images["90x90"],
+    created: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  UpdateGames();
+}
+
+function addNewUser(UID){
+  db.collection("Users").doc(UID).set({
+    Favorites: []
+  })
+}
+
+function addFavorite(gameID){
+  db.collection("Users").doc(UID).update({
+    Favorites: firebase.firestore.FieldValue.arrayUnion(gameID)
+  })
+  UpdateFavoriteList(UID);
+}
+
+function removeFavorite(gameID){
+  db.collection("Users").doc(UID).update({
+    Favorites: firebase.firestore.FieldValue.arrayRemove(gameID)
+  })
+  UpdateFavoriteList(UID);
+}
+
+function PopulateListUI2(extractedData, list, mode){
+  extractedData.forEach((data) => {
+    if(data.author == undefined){
+      return 
+    }
+  })
+}
+
+function PopulateListUI(ExtractedData, list){
+  list.textContent = '';
+  ExtractedData.forEach((data) => {
+    let li = document.createElement("li");
+    let text = document.createElement("div");
+    let authorText = document.createElement("div");
+    let img = document.createElement("img");
+    let AuthorImg = document.createElement("img");
+    text.innerText = data.title;
+    text.setAttribute("class", "projectTitle");
+    text.setAttribute("onClick", "OpenGame(" + data.id + ")");
+    authorText.innerText = data.author + ' • ' + data.Views + " views";
+    authorText.setAttribute("class", "projectAuthor");
+    authorText.setAttribute("onClick", "OpenGame(" + data.id + ")");
+    img.src = data.Thumbnail;
+    img.setAttribute("class", "projectImg");
+    img.setAttribute("onClick", "OpenGame(" + data.id + ")");
+    AuthorImg.setAttribute("class", "authorImg");
+    AuthorImg.src = data.authorImg;
+    AuthorImg.setAttribute("onClick", "OpenGame(" + data.id + ")");
+    li.appendChild(img);
+    li.appendChild(AuthorImg);
+    li.appendChild(text);
+    li.appendChild(authorText);
+    li.setAttribute("class", "projectCard");
+    list.appendChild(li);
+  });
+}
+
+function PopulateSearchListUI(ExtractedData, list){
+  list.textContent = '';
+    ExtractedData.forEach((data) => {
+      let li = document.createElement("li");
+      let text = document.createElement("div");
+      let authorText = document.createElement("div");
+      let img = document.createElement("img");
+      let AuthorImg = document.createElement("img");
+      text.innerText = data.title;
+      text.setAttribute("class", "projectTitle");
+      text.setAttribute("onClick", "OpenGame(" + data.id + ")");
+      authorText.innerText = data.author.username;
+      authorText.setAttribute("class", "projectAuthor");
+      authorText.setAttribute("onClick", "OpenGame(" + data.id + ")");
+      img.src = data.image;
+      img.setAttribute("class", "projectImg");
+      img.setAttribute("onClick", "OpenGame(" + data.id + ")");
+      AuthorImg.setAttribute("class", "authorImg");
+      AuthorImg.src = data.author.profile.images["90x90"];
+      AuthorImg.setAttribute("onClick", "OpenGame(" + data.id + ")");
+      li.appendChild(img);
+      li.appendChild(AuthorImg);
+      li.appendChild(text);
+      li.appendChild(authorText);
+      li.setAttribute("class", "projectCard");
+      list.appendChild(li);
+    });
+    refreshGames.classList.remove("rotating");
+}
+
+function OpenGame(gameID){
+  console.log("game with id", gameID, "opened!");
+  NewURL(gameID);
+}
+
+function FillUIContent(data, Views){
+    console.log(data.title, Views);
+}
+
+function GetScratchData(gameID){
+  //create XMLHttpRequest object
+  const xhr = new XMLHttpRequest()
+  //open a get request with the remote server URL
+  xhr.open("GET", "https://trampoline.turbowarp.org/proxy/projects/"+gameID)
+  //send the Http request
+  xhr.send()
+
+  //EVENT HANDLERS
+
+  //triggered when the response is completed
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      //parse JSON datax`x
+      data = JSON.parse(xhr.responseText)
+      console.log(data);
+      addView(data);
+    //   PopulateDescription(descriptionTag, data)
+    } else if (xhr.status === 404) {
+      console.log("No records found for project " + gameID)
+    }
+  }
+
+  //triggered when a network-level error occurs with the request
+  xhr.onerror = function() {
+    console.log("Network error occurred")
+  }
+
+  //triggered periodically as the client receives data
+  //used to monitor the progress of the request
+  xhr.onprogress = function(e) {
+    if (e.lengthComputable) {
+      console.log(`${e.loaded} B of ${e.total} B loaded!`)
+    } else {
+      console.log(`${e.loaded} B loaded!`)
+    }
+  }
+}
+
+function SearchScratchAPI(query){
+  refreshGames.classList.add("rotating");
+  SearchListContainer.classList.remove("listContainerHide");
+  //create XMLHttpRequest object
+  const xhr = new XMLHttpRequest()
+  //open a get request with the remote server URL
+  xhr.open("GET", "https://scratchgo-trampoline.onrender.com/proxy/search/projects/"+query+"/popular/en")
+  //send the Http request
+  xhr.send()
+
+  //EVENT HANDLERS
+
+  //triggered when the response is completed
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      //parse JSON datax`x
+      data = JSON.parse(xhr.responseText)
+      console.log(data);
+      PopulateSearchListUI(data.slice(0, 20), SearchList);
+      //addView(data);
+    //   PopulateDescription(descriptionTag, data)
+    } else if (xhr.status === 404) {
+      console.log("No records found for project " + gameID)
+    }
+  }
+
+  //triggered when a network-level error occurs with the request
+  xhr.onerror = function() {
+    console.log("Network error occurred")
+  }
+
+  //triggered periodically as the client receives data
+  //used to monitor the progress of the request
+  xhr.onprogress = function(e) {
+    if (e.lengthComputable) {
+      console.log(`${e.loaded} B of ${e.total} B loaded!`)
+    } else {
+      console.log(`${e.loaded} B loaded!`)
+    }
+  }
+}
+
+function ViewAllList(listID, arrowID){
+  let ListElement = document.getElementById(listID);
+  let ArrowElement = document.getElementById(arrowID);
+  ListElement.classList.toggle("seeAllList");
+  ArrowElement.classList.toggle("SeeAllArrowUp");
+  UpdateGames();
+}
+
+// initialize app
+var initApp = function() {
+  document.getElementById('sign-out').addEventListener('click', function() {
+    firebase.auth().signOut();
+  });
+};
+
+window.addEventListener('load', initApp);

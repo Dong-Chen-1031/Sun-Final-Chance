@@ -1,0 +1,282 @@
+const btn1 = document.getElementById('btn1')
+const frame = document.getElementById("frame").contentWindow
+const searchBar = document.getElementById("searchBarContainer")
+//const form = document.getElementById("form")
+const PlaceholderURL = document.getElementById("URL")
+const ButtonBox = document.getElementById("buttonBox")
+const Link = document.getElementById("copyLink")
+const Description = document.getElementById("description")
+const ModalContainer = document.getElementById("modalContainer")
+const modalLength = document.getElementById("modalLengthController")
+const projectTag = document.getElementById("projectTag")
+const descriptionTag = document.getElementById("descriptionContainer")
+const MuteBtn = document.getElementById("mute")
+const AudioImg = document.getElementById("audioImg")
+const MuteImg = document.getElementById("muteImg")
+const Controls = document.getElementById("control")
+const BottomNavBar = document.getElementById("BottomNav")
+const Notif = document.getElementById("Notif")
+const ProgressBar = document.getElementById("ProgressBar")
+const LoadingStateText = document.getElementById("LoadingStateText")
+const LoadingScreen = document.getElementById("LoadingScreen")
+var FavoriteBtn = document.getElementById("FavoriteBtn")
+
+var doneLoading = false
+var mute = false
+var isFavorite;
+var CurrentGameID;
+
+
+document.activeElement.blur();
+
+function checkIframeLoaded() {
+    //console.log("checking if iframe has loaded");
+    // Get a handle to the iframe element
+    var iframe = document.getElementById('frame');
+    var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+    // Check if loading is complete
+    if (  iframeDoc.readyState  == 'complete' ) {
+        // The loading is complete, call the function we want executed once the iframe is loaded
+        afterLoading();
+        return;
+    } 
+
+    // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
+    window.setTimeout(checkIframeLoaded, 100);
+}
+
+function checkIfGameLoaded(){
+  //console.log("checking if iframe has loaded");
+  // Get a handle to the iframe element
+  var iframe = document.getElementById('frame');
+  var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+  // Check if loading is complete
+  if (  frame.document.getElementsByClassName('loader_background_2DPrW').length  > 0 ) {
+    ProgressBar.setAttribute("style", "width: " + (parseFloat(frame.document.getElementsByClassName('loader_tw-progress-inner_3hE3h')[0].style.width.slice(0, -1))/2 + 50) + "%;");
+    LoadingStateText.innerHTML = "Loading game " + Math.round(parseFloat(frame.document.getElementsByClassName('loader_tw-progress-inner_3hE3h')[0].style.width.slice(0, -1))/2 + 50) + "%";
+  } else{
+    console.log("game done loading");
+    ProgressBar.setAttribute("style", "width: 100%;");
+    LoadingStateText.innerHTML = "Done!";
+    LoadingScreen.style.display = "none";
+    return;
+  }
+  // If we are here, it is not loaded. Set things up so we check   the status again in 100 milliseconds
+  window.setTimeout(checkIfGameLoaded, 50);
+}
+
+function afterLoading(){
+  if(!doneLoading){
+    ProgressBar.setAttribute("style", "width: 50%;");
+    LoadingStateText.innerHTML = "Loading game 0%";
+    checkIfGameLoaded();
+    frame.document.getElementsByClassName('stage-header_embed-buttons_2Q7nj')[0].style.display = 'none';
+    frame.document.getElementsByClassName('stage-header_stage-header-wrapper-overlay_5vfJa box_box_2jjDp')[0].style.backgroundColor = "#FFFFFF00"
+    //console.log("disabling fullscreen btn");
+    //console.log("search bar width should be: " + frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width);
+    searchBar.setAttribute("style","width:" + frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width + "; margin: 0 auto; position: relative;");
+    searchBar.width = frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width;
+    //console.log("current searchbar width: " + searchBar.width);
+    ButtonBox.setAttribute("style","width:" + frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width + "; margin: 0 auto; touch-action: none; margin-bottom: 15px; position:relative; height: 51vw; margin-top: 5px;");
+    ButtonBox.width = frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width
+    PlaceholderURL.setAttribute("style","width:" + (parseFloat(frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width.replace("px", "")) - 192)+ "px; height: 32px; float: right; pointer-events: auto; margin-top: 8px; display:inline; z-index:0; padding-left: 30px;");
+    PlaceholderURL.setAttribute("placeholder", "https://scratch.mit.edu/projects/" + window.location.hash.substring(1) + "/");
+    //console.log(gameURL.split("#")[1]);
+    ModalContainer.setAttribute("style","width:" + frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width + "; margin: 0 auto; height: 44px;");
+    modalLength.setAttribute("style","width:" + (parseFloat(frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width.replace("px", "")) - 192)+ "px; height: 32px; float: right; pointer-events: auto; margin-top: 8px; margin-right: 6rem;");
+    //projectTag.setAttribute("style","width:" + frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width + "; height: 44px; pointer-events: auto; margin: auto; margin-top: -10px; margin-bottom: 10px");
+    descriptionTag.setAttribute("style","width:" + (parseFloat(frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width.replace("px", "")) + 4) + "px; margin: 0 auto; margin-top: 2px;");
+    BottomNavBar.setAttribute("style","position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; z-index: 5; width:" + frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width + ";");
+    if(mute){
+      frame.vm.runtime.audioEngine.inputNode.gain.value = 0;
+    }
+    btns[0].setAttribute("style", "top:" + 0 + "px; left: 17%;")
+    btns[1].setAttribute("style", "top:" + ButtonBox.width.replace("px", "")*0.17 + "px; left: 0%;")
+    btns[2].setAttribute("style", "top:" + ButtonBox.width.replace("px", "")*0.17 + "px; left: 34%;")
+    btns[3].setAttribute("style", "top:" + ButtonBox.width.replace("px", "")*0.17 + "px; right: 0%;")
+    btns[4].setAttribute("style", "top:" + ButtonBox.width.replace("px", "")*0.34 + "px; left: 17%;")
+    btns[5].setAttribute("style", "top:" + ButtonBox.width.replace("px", "")*0.34 + "px; right: 17%;")
+    doneLoading = true
+    // alert("Hello! If the games tab isn't working for you right now it's because the FireWorks Studios team is hard at work fixing up the backend servers! Thank you for your patience and support!")
+  }
+}
+
+iframe.setAttribute("onload", "checkIframeLoaded()")
+
+// function PopulateDescription(desBox, data){
+//   desBox = "<div><b>"+ data.title +"</b></div>" + "<div>by <b>"+ data.author.username +"</b></div>" + "<div><b>\nInstructions:</b></div>" + data.instructions + "<div>\n<b>Notes and Credits:</b></div>" + data.description 
+// }
+
+function UpdateDescription(gameID){
+  //create XMLHttpRequest object
+  const xhr = new XMLHttpRequest()
+  //open a get request with the remote server URL
+  xhr.open("GET", "https://trampoline.turbowarp.org/proxy/projects/"+gameID)
+  //send the Http request
+  xhr.send()
+
+  //EVENT HANDLERS
+
+  //triggered when the response is completed
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      //parse JSON datax`x
+      data = JSON.parse(xhr.responseText)
+      console.log(data)
+      PopulateDescription(descriptionTag, data)
+    } else if (xhr.status === 404) {
+      console.log("No records found")
+    }
+  }
+
+  //triggered when a network-level error occurs with the request
+  xhr.onerror = function() {
+    console.log("Network error occurred")
+  }
+
+  //triggered periodically as the client receives data
+  //used to monitor the progress of the request
+  xhr.onprogress = function(e) {
+    if (e.lengthComputable) {
+      console.log(`${e.loaded} B of ${e.total} B loaded!`)
+    } else {
+      console.log(`${e.loaded} B loaded!`)
+    }
+  }
+
+}
+
+function isPositiveInteger(str) {
+  if (typeof str !== 'string') {
+    return false;
+  }
+
+  const num = Number(str);
+
+  if (Number.isInteger(num) && num > 0) {
+    return true;
+  }
+
+  return false;
+}
+
+
+function NewURL(URL) {
+  URL = URL.toString();
+  if(URL != ""){
+    //alert(`The function 'test' is executed`);
+    //console.log("input url: " + URL);
+    if(!isPositiveInteger(URL)){
+      var TempScratchGOURL = URL.split('#')
+      if(isPositiveInteger(TempScratchGOURL[1])){
+        var gameID = TempScratchGOURL[1]
+      }else{
+        var tempParse = URL.split('/');
+        //console.log(tempParse);
+        if(/^\d+$/.test(tempParse[4])){
+          var gameID = tempParse[4];
+        }else{
+          var gameID = "736088939";
+        }
+      }
+    }else{
+      var gameID = URL
+    }
+    //console.log(gameID);
+    window.open("#"+gameID,"_self")
+    UpdateDescription(gameID)
+    gameURL = "turbowarp/embed.html?addons=pause#gameID".replace("gameID", gameID)
+    document.getElementById("frame").src = gameURL;
+    frame.location.reload()
+    descriptionTag.classList.remove("show")
+    GetScratchData(gameID);
+    AddPlayedGameLocal(gameID);
+    UpdateFavoriteList(UID);
+    CurrentGameID = gameID.toString();
+  }
+
+}
+
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+Link.onclick = function() {
+  navigator.clipboard.writeText(window.location.href);
+  modal.style.display = "block";
+}
+
+Description.onclick = function(){
+  descriptionTag.classList.toggle("show")
+}
+
+Controls.onclick = function(){
+  document.getElementsByName("remap")[0].classList.toggle("show")
+  document.getElementsByName("remap")[1].classList.toggle("show")
+  document.getElementsByName("remap")[2].classList.toggle("show")
+  document.getElementsByName("remap")[3].classList.toggle("show")
+  document.getElementsByName("remap")[4].classList.toggle("show")
+  document.getElementsByName("remap")[5].classList.toggle("show")
+  document.getElementById("btn0Text").innerHTML = document.getElementById("0Choice").value
+  document.getElementById("btn1Text").innerHTML = document.getElementById("1Choice").value
+  document.getElementById("btn2Text").innerHTML = document.getElementById("2Choice").value
+  document.getElementById("btn3Text").innerHTML = document.getElementById("3Choice").value
+  document.getElementById("btn4Text").innerHTML = document.getElementById("4Choice").value
+  document.getElementById("btn5Text").innerHTML = document.getElementById("5Choice").value
+  if(!document.getElementsByName("remap")[0].classList.contains("show")){
+    updateMapping()
+  }
+}
+
+MuteBtn.onclick = function(){
+  if(doneLoading){
+    AudioImg.classList.toggle("ImageHide")
+    MuteImg.classList.toggle("ImageHide")
+    frame.vm.runtime.audioEngine.inputNode.gain.value = 1 - frame.vm.runtime.audioEngine.inputNode.gain.value;
+    mute = !mute
+  }
+}
+
+FavoriteBtn.onclick = function(){
+  if(UID != undefined){
+    FavoriteBtn = document.getElementById("FavoriteBtn")
+    if(isFavorite){
+      removeFavorite(CurrentGameID);
+      FavoriteBtn.src = "svg/heart outline.svg";
+      isFavorite = false;
+    }else{
+      addFavorite(CurrentGameID);
+      FavoriteBtn.src = "svg/heart.svg";
+      isFavorite = true;
+    }
+  }else{
+    alert("You must log in to save games to your favorites!");
+  }
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.ontouchstart = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+function NotifHide(){
+  Notif.style.display = "none";
+}
+
+if (window.matchMedia("(min-width: 1000px)").matches) {
+  Notif.style.display = "block";
+} else {
+  Notif.style.display = "none";
+}

@@ -1,0 +1,146 @@
+.projectImg{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 212px;
+    margin-left: -10px;
+    margin-top: -10px;
+}
+
+.authorImg{
+    border-radius: 5px;
+    width: 18%;
+    float: left;
+}
+
+.projectTitle{
+    font-family: 'Helvetica Neue', sans-serif; 
+    font-size: 12px;
+    width: 76%;
+    float: right;
+    color: #4d96fe;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.projectAuthor{
+    font-family: 'Helvetica Neue', sans-serif; 
+    font-size: 10px;
+    width: 76%;
+    float: right;
+    color: #595959;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.projectList{
+    list-style-type: none;
+    margin-top: 0px;
+    padding-left: 5px;
+    padding-top: 5px;
+    width: 1150px;
+}
+
+.projectCard{
+    float: left;
+    display: inline;
+    width: 212px;
+    height: 212px;
+    overflow: hidden;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #ffffff;
+}
+
+.SeeMoreText{
+    float: left;
+    display: inline;
+    width: 132.5px;
+    overflow: hidden;
+    padding: 10px;
+    margin: 5px;
+}
+
+
+.SectionHide{
+    display: none;
+}
+
+@media screen and (max-width: 530px){
+    .projectImg{
+        width: 38vw;
+    }
+    .projectCard{
+        width: 38vw;
+        height: 40vw;
+    }
+    .projectList{
+        width: 205vw;
+    }   
+  }
+
+.listContainer{
+    width: 100%;
+    overflow-x: scroll;
+    margin-top: -10px;
+}
+
+.listContainerHide{
+    display: none;
+}
+
+.listTitles{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    font-size: 30px;
+}
+
+.GamesSearch{
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    right: 10px;
+    font-family: 'Poppins', sans-serif;
+    color: #000000;
+    border-radius: 30px;
+    border: none;
+    padding-left: 20px;
+    font-size: 25px;
+    height: 40px;
+}
+
+.SearchBtn{
+    width: 40px; 
+    height: 40px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border-radius: 30px;
+    border: none;
+    background: none;
+}
+
+.SearchIcon{
+    width: 25px; 
+    height: 25px;
+    filter: invert(44%) sepia(16%) saturate(8%) hue-rotate(324deg) brightness(99%) contrast(90%);
+}
+
+@-webkit-keyframes rotating {
+    from{
+    -webkit-transform: rotate(0deg);
+    }
+    to{
+    -webkit-transform: rotate(360deg);
+    }
+}
+
+.rotating {
+    -webkit-animation: rotating 1s linear infinite;
+}
+

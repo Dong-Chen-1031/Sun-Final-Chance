@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<!-- saved from url=(0047)https://scratchgo.app/webplayer.html#1000745019 -->
+<html class="mdl-js">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport"
+        content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=no">
+    <title>ScratchGO</title>
+    <script src="./ScratchGO_files/BtnHandler.js.下載" defer=""></script>
+    <script src="./ScratchGO_files/screenResize.js.下載" defer=""></script>
+    <!-- <script src="./ScratchGO_files/webplayer.js.下載" defer=""></script> -->
+    <!-- <script src="./ScratchGO_files/srcLoaderScript.js.下載" defer=""></script> -->
+    <!-- <script src="./ScratchGO_files/localStorage.js.下載"></script> -->
+    <script src="./ScratchGO_files/BottomNav.js.下載" defer=""></script>
+    <link rel="stylesheet" href="./ScratchGO_files/BottomNav.css">
+    <!-- <script src="app.js" defer></script> -->
+    <link rel="icon" type="image/x-icon" href="https://scratchgo.app/images/favicon.ico">
+    <link rel="stylesheet" href="./ScratchGO_files/styles.css">
+    <link rel="stylesheet" href="./ScratchGO_files/gamesTab.css">
+    <link rel="stylesheet" href="./ScratchGO_files/loadingScreen.css">
+    <link rel="stylesheet" href="./ScratchGO_files/account.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="./ScratchGO_files/css2" rel="stylesheet">
+    <link href="./ScratchGO_files/css2(1)" rel="stylesheet">
+    <link href="./ScratchGO_files/css2(2)" rel="stylesheet">
+    <link href="./ScratchGO_files/uicons-bold-rounded.css" rel="stylesheet">
+    <link rel="manifest" href="https://scratchgo.app/manifest.json">
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="https://scratchgo.app/images/icons/icon-512x512.png">
+    <meta name="apple-mobile-web-app-status-bar" content="##ffab19">
+    <meta name="theme-color" content="##ffab19">
+    <!-- <script src="./ScratchGO_files/api.js.下載" type="text/javascript" charset="UTF-8" gapi_processed="true"></script> -->
+    <script>
+        document.getElementById("frame").onload = function() {
+            // 取得 iframe 中的 document 物件
+            var iframeDocument = document.getElementById("frame").contentDocument;
+            var inputElement = iframeDocument.getElementByTagName("canvas");
+
+            // 模擬鍵盤輸入
+            
+        };
+        function KeyboardInput_(text) {
+                // 假設要模擬的輸入內容為 "Hello World!"
+                // 取得 iframe 中的 input 元素，假設它有 id 為 "myInput"
+                console.log(text);
+                let iframeDocument = document.getElementById("frame").contentWindow.document;
+                let inputElement = iframeDocument.getElementByTagName("canvas");
+
+                // let inputElement=document.getElementById("frame")
+                let keyCode = text.charCodeAt(0);
+                let keyEvent = new KeyboardEvent("keydown", { keyCode: keyCode });
+                inputElement.dispatchEvent(keyEvent);
+
+                keyEvent = new KeyboardEvent("keypress", { keyCode: keyCode });
+                inputElement.dispatchEvent(keyEvent);
+                
+        }function KeyboardInput_up(text) {
+                console.log("up"+text);
+                let keyCode = text.charCodeAt(0);
+                // 假設要模擬的輸入內容為 "Hello World!"
+                // 取得 iframe 中的 input 元素，假設它有 id 為 "myInput"
+
+                let iframeDocument = document.getElementById("frame").contentWindow.document;
+                let inputElement = iframeDocument.getElementByTagName("canvas");
+
+
+                // let inputElement=document.getElementById("frame")    
+
+                keyEvent = new KeyboardEvent("keyup", { keyCode: keyCode });
+                inputElement.dispatchEvent(keyEvent);
+                
+        }
+
+    </script>
+</head>
+
+<body class="noscroll prevent-select">
+
+    <div id="myModal" class="modal">
+        <div id="modalContainer" style="width:343px; margin: 0 auto; height: 44px;">
+            <div id="modalLengthController"
+                style="width:151px; height: 32px; float: right; pointer-events: auto; margin-top: 8px; margin-right: 6rem;">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <div style="float: left; display: inline; font-family: &#39;Helvetica Neue&#39;, sans-serif;"
+                        class="close">×</div>
+                    <div
+                        style="float: left; display: inline; font-family: &#39;Helvetica Neue&#39;, sans-serif; font-size: 14px; margin-top: 3px; margin-left: 5px;">
+                        Link copied!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="webPlayercontainer" style="margin-top: 0px;">
+        <div style="width: inherit; position: fixed; pointer-events: none;">
+            <div class="descriptionContainer" id="descriptionContainer"
+                style="width:347px; margin: 0 auto; margin-top: 2px;"><a
+                    href="https://scratch.mit.edu/projects/1000745019/" target="_blank"><b>_</b></a>
+                <div>by 孫浩雲 &amp; 林禹澔</div>手機版介面由陳柏東協助完成
+            </div>
+
+        </div>
+
+        <div class="frameContainer">
+            <iframe id="frame" src="./Sun_Final_Change.html" width="100%" height="100%"
+                allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen="" onload="checkIframeLoaded()">
+            </iframe>
+        </div>
+
+
+        <div style="width: inherit; position: fixed;">
+            <div id="buttonBox"
+                style="width:343px; margin: 0 auto; touch-action: none; margin-bottom: 15px; position:relative; height: 51vw; margin-top: 5px;">
+
+                <div
+                    style="position: absolute; top: 0px; right: 35px; font-size: 12px; font-weight: 400; display: block; font-family: &#39;Helvetica Neue&#39;; color: #4d96fe; width: 50vw; height: 20px; white-space: nowrap; overflow: hidden; text-align: right;">
+                    <em>by <span style="font-weight: 500; text-decoration: none;" id="AuthorName"><a
+                                target="_blank"><b>孫浩雲 &amp; 林禹澔</b></a></span></em>
+                </div>
+
+
+                <button class="testBtn" id="btn0" style="top:0px; left: 17%;" onmousedown="KeyboardInput_('w')" onmouseup="KeyboardInput_up('w')">
+                    <div id="btn0Text">w</div>
+                    <select name="remap" id="0Choice" class="selectList">
+                        <option value="▲" selected="">▲</option>
+                        <option value="▼">▼</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(-90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ◀</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ▶</option>
+                        <option value="[_]">Space</option>
+                        <option value="w">w</option>
+                        <option value="a">a</option>
+                        <option value="s">s</option>
+                        <option value="d">d</option>
+                        <option value="z">z</option>
+                        <option value="x">x</option>
+
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                        <option value="e">e</option>
+                        <option value="f">f</option>
+                        <option value="g">g</option>
+                        <option value="h">h</option>
+
+                        <option value="i">i</option>
+                        <option value="j">j</option>
+                        <option value="k">k</option>
+                        <option value="l">l</option>
+                        <option value="m">m</option>
+                        <option value="n">n</option>
+                        <option value="o">o</option>
+                        <option value="p">p</option>
+                        <option value="q">q</option>
+                        <option value="r">r</option>
+                        <option value="t">t</option>
+                        <option value="u">u</option>
+                        <option value="v">v</option>
+                        <option value="y">y</option>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+
+                    </select>
+                </button>
+                <button class="testBtn" id="btn1" style="top:58.31px; left: 0%;">
+                    <div id="btn1Text">a</div>
+                    <select name="remap" id="1Choice" class="selectList">
+                        <option value="▲">▲</option>
+                        <option value="▼">▼</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(-90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;"
+                            selected="">◀</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ▶</option>
+                        <option value="[_]">Space</option>
+                        <option value="w">w</option>
+                        <option value="a">a</option>
+                        <option value="s">s</option>
+                        <option value="d">d</option>
+                        <option value="z">z</option>
+                        <option value="x">x</option>
+
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                        <option value="e">e</option>
+                        <option value="f">f</option>
+                        <option value="g">g</option>
+                        <option value="h">h</option>
+
+                        <option value="i">i</option>
+                        <option value="j">j</option>
+                        <option value="k">k</option>
+                        <option value="l">l</option>
+                        <option value="m">m</option>
+                        <option value="n">n</option>
+                        <option value="o">o</option>
+                        <option value="p">p</option>
+                        <option value="q">q</option>
+                        <option value="r">r</option>
+                        <option value="t">t</option>
+                        <option value="u">u</option>
+                        <option value="v">v</option>
+                        <option value="y">y</option>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+
+                    </select>
+                </button>
+                <button class="testBtn" id="btn2" style="top:58.31px; left: 34%;">
+                    <div id="btn2Text">d</div>
+                    <select name="remap" id="2Choice" class="selectList">
+                        <option value="▲">▲</option>
+                        <option value="▼">▼</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(-90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ◀</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;"
+                            selected="">▶</option>
+                        <option value="[_]">Space</option>
+                        <option value="w">w</option>
+                        <option value="a">a</option>
+                        <option value="s">s</option>
+                        <option value="d">d</option>
+                        <option value="z">z</option>
+                        <option value="x">x</option>
+
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                        <option value="e">e</option>
+                        <option value="f">f</option>
+                        <option value="g">g</option>
+                        <option value="h">h</option>
+
+                        <option value="i">i</option>
+                        <option value="j">j</option>
+                        <option value="k">k</option>
+                        <option value="l">l</option>
+                        <option value="m">m</option>
+                        <option value="n">n</option>
+                        <option value="o">o</option>
+                        <option value="p">p</option>
+                        <option value="q">q</option>
+                        <option value="r">r</option>
+                        <option value="t">t</option>
+                        <option value="u">u</option>
+                        <option value="v">v</option>
+                        <option value="y">y</option>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+
+                    </select>
+                </button>
+                <button class="testBtn" id="btn4" style="top:116.62px; left: 17%;">
+                    <div id="btn4Text">s</div>
+                    <select name="remap" id="4Choice" class="selectList">
+                        <option value="▲">▲</option>
+                        <option value="▼" selected="">▼</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(-90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ◀</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ▶</option>
+                        <option value="[_]">Space</option>
+                        <option value="w">w</option>
+                        <option value="a">a</option>
+                        <option value="s">s</option>
+                        <option value="d">d</option>
+                        <option value="z">z</option>
+                        <option value="x">x</option>
+
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                        <option value="e">e</option>
+                        <option value="f">f</option>
+                        <option value="g">g</option>
+                        <option value="h">h</option>
+
+                        <option value="i">i</option>
+                        <option value="j">j</option>
+                        <option value="k">k</option>
+                        <option value="l">l</option>
+                        <option value="m">m</option>
+                        <option value="n">n</option>
+                        <option value="o">o</option>
+                        <option value="p">p</option>
+                        <option value="q">q</option>
+                        <option value="r">r</option>
+                        <option value="t">t</option>
+                        <option value="u">u</option>
+                        <option value="v">v</option>
+                        <option value="y">y</option>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+
+                    </select>
+                </button>
+                <button class="testBtn" id="btn3" style="top:58.31px; right: 0%;">
+                    <div id="btn3Text">e</div>
+                    <select name="remap" id="3Choice" class="selectList">
+                        <option value="▲">▲</option>
+                        <option value="▼">▼</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(-90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ◀</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ▶</option>
+                        <option value="[_]">Space</option>
+                        <option value="w">w</option>
+                        <option value="a">a</option>
+                        <option value="s">s</option>
+                        <option value="d">d</option>
+                        <option value="z">z</option>
+                        <option value="x">x</option>
+
+                        <option value="b" selected="">b</option>
+                        <option value="c">c</option>
+                        <option value="e">e</option>
+                        <option value="f">f</option>
+                        <option value="g">g</option>
+                        <option value="h">h</option>
+
+                        <option value="i">i</option>
+                        <option value="j">j</option>
+                        <option value="k">k</option>
+                        <option value="l">l</option>
+                        <option value="m">m</option>
+                        <option value="n">n</option>
+                        <option value="o">o</option>
+                        <option value="p">p</option>
+                        <option value="q">q</option>
+                        <option value="r">r</option>
+                        <option value="t">t</option>
+                        <option value="u">u</option>
+                        <option value="v">v</option>
+                        <option value="y">y</option>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+
+                    </select>
+                </button>
+                <button class="testBtn" id="btn5" style="top:116.62px; right: 17%;">
+                    <div id="btn5Text">q</div>
+                    <select name="remap" id="5Choice" class="selectList">
+                        <option value="▲">▲</option>
+                        <option value="▼">▼</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(-90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ◀</option>
+                        <option
+                            value="&lt;span style=&quot;transform: rotate(90deg); display: inline-block;&quot;&gt;▲&lt;/span&gt;">
+                            ▶</option>
+                        <option value="[_]">Space</option>
+                        <option value="w">w</option>
+                        <option value="a" selected="">a</option>
+                        <option value="s">s</option>
+                        <option value="d">d</option>
+                        <option value="z">z</option>
+                        <option value="x">x</option>
+
+                        <option value="b">b</option>
+                        <option value="c">c</option>
+                        <option value="e">e</option>
+                        <option value="f">f</option>
+                        <option value="g">g</option>
+                        <option value="h">h</option>
+
+                        <option value="i">i</option>
+                        <option value="j">j</option>
+                        <option value="k">k</option>
+                        <option value="l">l</option>
+                        <option value="m">m</option>
+                        <option value="n">n</option>
+                        <option value="o">o</option>
+                        <option value="p">p</option>
+                        <option value="q">q</option>
+                        <option value="r">r</option>
+                        <option value="t">t</option>
+                        <option value="u">u</option>
+                        <option value="v">v</option>
+                        <option value="y">y</option>
+
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+
+                    </select>
+                </button>
+            </div>
+
+
+        </div>
+        <!-- <div style="text-align: center; font-size: 20px; color: #4d96fe; position:absolute; bottom: 20px; width: 300px; right:25%; left:50%; margin-left:-150px;">
+            <a href="https://scratchgo.app" target="_blank" style="text-decoration: underline;">ScratchGO v0.3(2)</a>
+            <div style="font-size: 12px; font-family: 'Helvetica Neue'; font-weight: 400; margin-top: -5px;">
+                Developed with &#129505 by <a href="https://scratchgo.app/about.html" target="_blank" style="text-decoration: underline; font-weight: 500;">FireWorks Studios</a>. <br>
+                Powered by <a href="https://turbowarp.org/" target="_blank" style="text-decoration: underline; font-weight: 500;">TurboWarp</a>. Not affiliated with Scratch.
+            </div>
+        </div> -->
+
+    </div>
+
+    <div class="TabScreenBackground" id="TabScreenBackground">
+    </div>
+
+    <div class="TabScreenContainer" id="TabScreenContainer">
+        <div class="TabTab" id="TabTab" onclick="clickSearch()">
+            <span class="tabArrow" style="color: white;">
+                <img src="./ScratchGO_files/caret-down.svg" alt="" srcset="" class="NavIcon">
+            </span>
+        </div>
+
+        <div class="TabScreen" id="TabScreen">
+            <div id="GamesSection">
+                <div style="width: 100%; height: 50px; margin-top: 10px;">
+                    <input type="text" placeholder="Search games" class="GamesSearch"
+                        onblur="SearchScratchAPI(this.value)">
+                    <button type="submit" class="SearchBtn"><img src="./ScratchGO_files/search.svg" alt=""
+                            class="SearchIcon"></button>
+                </div>
+                <div class="listContainer listContainerHide" id="SearchListContainer" style="margin-top: 10px;">
+                    <ul id="SearchList" class="projectList" onclick="clickSearch()"></ul>
+                </div>
+                <div class="listTitles" id="DiveTitle" onclick="ViewAllList(&#39;DiveList&#39;,&#39;DiveArrow&#39;)">
+                    Dive back in
+                    <img src="./ScratchGO_files/caret-down.svg" alt="" srcset=""
+                        class="NavIcon filter-white SeeAllArrow" id="DiveArrow">
+                </div>
+                <div class="listContainer">
+                    <ul id="DiveList" class="projectList" onclick="clickSearch()">
+                        <li class="projectCard"><img src="./ScratchGO_files/1000745019_480x360.png" class="projectImg"
+                                onclick="OpenGame(1000745019)"><img class="authorImg"
+                                src="./ScratchGO_files/106744397_90x90.png" onclick="OpenGame(1000745019)">
+                            <div class="projectTitle" onclick="OpenGame(1000745019)">_</div>
+                            <div class="projectAuthor" onclick="OpenGame(1000745019)">Infinity-012 • 1 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/755416315_480x360.png" class="projectImg"
+                                onclick="OpenGame(755416315)"><img class="authorImg"
+                                src="./ScratchGO_files/4091729_90x90.png" onclick="OpenGame(755416315)">
+                            <div class="projectTitle" onclick="OpenGame(755416315)">Welcome to ScratchGO!</div>
+                            <div class="projectAuthor" onclick="OpenGame(755416315)">donnie9171 • 2782 views</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="listTitles" id="PopularTitle"
+                    onclick="ViewAllList(&#39;PopularList&#39;,&#39;PopularArrow&#39;)">Popular games
+                    <img src="./ScratchGO_files/caret-down.svg" alt="" srcset=""
+                        class="NavIcon filter-white SeeAllArrow" id="PopularArrow">
+                </div>
+                <div class="listContainer">
+                    <ul id="PopularList" class="projectList" onclick="clickSearch()">
+                        <li class="projectCard"><img src="./ScratchGO_files/755416315_480x360.png" class="projectImg"
+                                onclick="OpenGame(755416315)"><img class="authorImg"
+                                src="./ScratchGO_files/4091729_90x90.png" onclick="OpenGame(755416315)">
+                            <div class="projectTitle" onclick="OpenGame(755416315)">Welcome to ScratchGO!</div>
+                            <div class="projectAuthor" onclick="OpenGame(755416315)">donnie9171 • 2782 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/60917032_480x360.png" class="projectImg"
+                                onclick="OpenGame(60917032)"><img class="authorImg"
+                                src="./ScratchGO_files/1882674_90x90.png" onclick="OpenGame(60917032)">
+                            <div class="projectTitle" onclick="OpenGame(60917032)">Appel v1.4</div>
+                            <div class="projectAuthor" onclick="OpenGame(60917032)">griffpatch • 2558 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/736088939_480x360.png" class="projectImg"
+                                onclick="OpenGame(736088939)"><img class="authorImg"
+                                src="./ScratchGO_files/7100_90x90.png" onclick="OpenGame(736088939)">
+                            <div class="projectTitle" onclick="OpenGame(736088939)">Project URL Error :(</div>
+                            <div class="projectAuthor" onclick="OpenGame(736088939)">donnie9171 • 2115 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/625028360_480x360.png" class="projectImg"
+                                onclick="OpenGame(625028360)"><img class="authorImg"
+                                src="./ScratchGO_files/76597124_90x90.png" onclick="OpenGame(625028360)">
+                            <div class="projectTitle" onclick="OpenGame(625028360)">Triple Trouble FNF</div>
+                            <div class="projectAuthor" onclick="OpenGame(625028360)">YT_PhantomCoders • 698 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/198685615_480x360.png" class="projectImg"
+                                onclick="OpenGame(198685615)"><img class="authorImg"
+                                src="./ScratchGO_files/3563958_90x90.png" onclick="OpenGame(198685615)">
+                            <div class="projectTitle" onclick="OpenGame(198685615)">Irratus </div>
+                            <div class="projectAuthor" onclick="OpenGame(198685615)">FUNUT • 694 views</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="listTitles" id="FeaturedTitle"
+                    onclick="ViewAllList(&#39;LatestList&#39;,&#39;FeaturedArrow&#39;)">Latest games
+                    <img src="./ScratchGO_files/caret-down.svg" alt="" srcset=""
+                        class="NavIcon filter-white SeeAllArrow" id="FeaturedArrow">
+                </div>
+                <div class="listContainer">
+                    <ul id="LatestList" class="projectList" onclick="clickSearch()">
+                        <li class="projectCard"><img src="./ScratchGO_files/184329254_480x360.png" class="projectImg"
+                                onclick="OpenGame(184329254)"><img class="authorImg"
+                                src="./ScratchGO_files/25515257_90x90.png" onclick="OpenGame(184329254)">
+                            <div class="projectTitle" onclick="OpenGame(184329254)">Sonic 4 Episode 2</div>
+                            <div class="projectAuthor" onclick="OpenGame(184329254)">ScratcherSonic • 1 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/1000745019_480x360.png" class="projectImg"
+                                onclick="OpenGame(1000745019)"><img class="authorImg"
+                                src="./ScratchGO_files/106744397_90x90.png" onclick="OpenGame(1000745019)">
+                            <div class="projectTitle" onclick="OpenGame(1000745019)">_</div>
+                            <div class="projectAuthor" onclick="OpenGame(1000745019)">Infinity-012 • 1 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/387363814_480x360.png" class="projectImg"
+                                onclick="OpenGame(387363814)"><img class="authorImg"
+                                src="./ScratchGO_files/35328096_90x90.png" onclick="OpenGame(387363814)">
+                            <div class="projectTitle" onclick="OpenGame(387363814)">Super Mario Bros. the Lost Levels
+                                for Scratch remix HACKED</div>
+                            <div class="projectAuthor" onclick="OpenGame(387363814)">henkiepoepzak • 1 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/806846460_480x360.png" class="projectImg"
+                                onclick="OpenGame(806846460)"><img class="authorImg"
+                                src="./ScratchGO_files/76557848_90x90.png" onclick="OpenGame(806846460)">
+                            <div class="projectTitle" onclick="OpenGame(806846460)">Super Mario Advance 5</div>
+                            <div class="projectAuthor" onclick="OpenGame(806846460)">luigiatfnffiji • 2 views</div>
+                        </li>
+                        <li class="projectCard"><img src="./ScratchGO_files/831668714_480x360.png" class="projectImg"
+                                onclick="OpenGame(831668714)"><img class="authorImg"
+                                src="./ScratchGO_files/79116979_90x90.png" onclick="OpenGame(831668714)">
+                            <div class="projectTitle" onclick="OpenGame(831668714)">super mario advance 5 ost -
+                                overworld</div>
+                            <div class="projectAuthor" onclick="OpenGame(831668714)">nekoender • 1 views</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="FavoriteSection">
+                <div class="listTitles" id="FavoriteTitle">Log in to save your favorite games here!</div>
+                <div class="listContainer">
+                    <ul id="FavoriteList" class="projectList" onclick="clickSearch()"></ul>
+                </div>
+                <!-- <div class="listTitles" id="PopularTitle" onclick="ViewAllList('PopularList','PopularArrow')">Popular games
+                    <img src="svg/caret-down.svg" alt="" srcset="" class="NavIcon filter-white SeeAllArrow" id="PopularArrow">
+                </div>
+                <div class="listContainer">
+                    <ul id="PopularList" class="projectList" onclick="clickSearch()"></ul>
+                </div>
+                <div class="listTitles" id="FeaturedTitle" onclick="ViewAllList('LatestList','FeaturedArrow')">Latest games
+                    <img src="svg/caret-down.svg" alt="" srcset="" class="NavIcon filter-white SeeAllArrow" id="FeaturedArrow">
+                </div>
+                <div class="listContainer">
+                    <ul id="LatestList" class="projectList" onclick="clickSearch()"></ul>
+                </div> -->
+            </div>
+
+            <!-- <a id="AccountAnchor"><div class="listTitles">Account</div></a> -->
+            <div id="AccountSection" style="padding-top: 70px;">
+                <div id="LoggedOutPanel" style="display: block;">
+                    <div class="AccountIcon" id="AccountIconPlaceholder">
+                        <img src="./ScratchGO_files/account.svg" alt="" style="width: 20vw;" class="filter-blue">
+                    </div>
+                    <!-- The surrounding HTML is left untouched by FirebaseUI.
+                        Your app may use that space for branding, controls and other customizations.-->
+                    <div id="firebaseui-auth-container">
+                        <div
+                            class="firebaseui-container firebaseui-page-provider-sign-in firebaseui-id-page-provider-sign-in firebaseui-use-spinner">
+                            <div class="firebaseui-card-content">
+                                <form onsubmit="return false;">
+                                    <ul class="firebaseui-idp-list">
+                                        <li class="firebaseui-list-item"><button
+                                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-google firebaseui-id-idp-button"
+                                                data-provider-id="google.com" style="background-color:#ffffff"
+                                                data-upgraded=",MaterialButton"><span
+                                                    class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon"
+                                                        alt="" src="./ScratchGO_files/google.svg"></span><span
+                                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with
+                                                    Google</span><span
+                                                    class="firebaseui-idp-text firebaseui-idp-text-short">Google</span></button>
+                                        </li>
+                                        <li class="firebaseui-list-item"><button
+                                                class="firebaseui-idp-button mdl-button mdl-js-button mdl-button--raised firebaseui-idp-password firebaseui-id-idp-button"
+                                                data-provider-id="password" style="background-color:#db4437"
+                                                data-upgraded=",MaterialButton"><span
+                                                    class="firebaseui-idp-icon-wrapper"><img class="firebaseui-idp-icon"
+                                                        alt="" src="./ScratchGO_files/mail.svg"></span><span
+                                                    class="firebaseui-idp-text firebaseui-idp-text-long">Sign in with
+                                                    email</span><span
+                                                    class="firebaseui-idp-text firebaseui-idp-text-short">Email</span></button>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                            <div class="firebaseui-card-footer firebaseui-provider-sign-in-footer">
+                                <p class="firebaseui-tos firebaseui-tospp-full-message">By continuing, you are
+                                    indicating that you accept our <a href="javascript:void(0)"
+                                        class="firebaseui-link firebaseui-tos-link" target="_blank">Terms of Service</a>
+                                    and <a href="javascript:void(0)" class="firebaseui-link firebaseui-pp-link"
+                                        target="_blank">Privacy Policy</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="loader" style="display: none;">Loading...</div>
+                </div>
+
+                <div class="LoggedInPanel" style="display: none;" id="LoggedInPanel">
+                    <img style="border-radius: 50%; margin-left: auto; margin-right: auto;" id="photo">
+                    <div style="text-align: center; font-size: 20px;">Hi <span id="name">Enoch</span>!</div>
+                    <div style="text-align: center; font-size: 20px;">You're logged in.</div>
+                    <div
+                        style="text-align: center; font-size: 15px; font-family: &#39;Helvetica Neue&#39;, sans-serif; color: #4d96fe; padding-top: 1rem; padding-left: 3rem; padding-right: 3rem;">
+                        Logging in lets you to save your games and settings across all devices.</div>
+                    <button class="LogOutBtn" id="sign-out"><i class="fi fi-br-sign-out-alt"
+                            style="position: relative; top: 3px; "></i> log out</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="TabTitle" id="TabTitle">
+            <span id="TabTitleText">Games</span>
+            <img class="filter-white" src="./ScratchGO_files/refresh.svg"
+                style="position: absolute; width: 20px; right: 15px; top: 60px;" onclick="UpdateGames()"
+                id="refreshGames">
+        </div>
+    </div>
+
+
+
+    <div class="NotifBackground" id="Notif" onclick="NotifHide()" style="display: none;">
+        <div class="NotifContainer">
+            <img src="./ScratchGO_files/ScratchGO mascot.PNG"
+                style="width: 100px; position: absolute; left: 0; right: 0; margin-left: auto; margin-right: auto; top: 270px;">
+            Hey! Your screen is really wide - I think you're viewing this on a computer right now... <br> <br>
+            That's ok, just wanted to remind you that the controls only work on touchscreen devices!
+            <div class="OKButton">
+                No worries lol
+            </div>
+        </div>
+    </div>
+
+    <div class="LoadingScreen" id="LoadingScreen" style="display: none;">
+        <img src="./ScratchGO_files/icon.PNG" alt="ScratchGO Icon" class="LogoImage">
+        <div class="LoadingVersionText">
+            ScratchGO beta 0.7
+        </div>
+        <div class="ProgressBarContainer">
+            <div class="ProgressBar" id="ProgressBar" style="width: 100%;"></div>
+        </div>
+        <div class="LoadingStateText" id="LoadingStateText">Done!</div>
+        <div width="100%"
+            style="font-size: 15px; display: block; text-align: center; padding: 1vw; position: absolute; bottom: 10px; left: 0; right: 0; margin-left: auto; margin-right: auto; color: white;">
+            Developed with 🧡 by <a href="https://www.fireworksstudios.io/" target="_blank"
+                style="color: #ffffff; text-decoration: underline;">FireWorks Studios</a> and powered by <a
+                href="https://turbowarp.org/" target="_blank"
+                style="color: #ffffff; text-decoration: underline;">TurboWarp</a>.
+            <br> Not affiliated with Scratch ;)
+        </div>
+    </div>
+
+
+    <script src="./ScratchGO_files/firebase-app-compat.js.下載"></script>
+    <script src="./ScratchGO_files/firebase-firestore-compat.js.下載"></script>
+    <script src="./ScratchGO_files/firebase-auth-compat.js.下載"></script>
+    <script src="./ScratchGO_files/firebase-ui-auth.js.下載"></script>
+    <link type="text/css" rel="stylesheet" href="./ScratchGO_files/firebase-ui-auth.css">
+    <script src="./ScratchGO_files/firebase.js.下載"></script>
+
+    <iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1"
+        vspace="0" width="100%" aria-hidden="true" id="I0_1713100369460" name="I0_1713100369460"
+        src="./ScratchGO_files/iframe.html"
+        style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe><iframe ng-non-bindable=""
+        frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" tabindex="-1" vspace="0" width="100%"
+        aria-hidden="true" id="I1_1713100369464" name="I1_1713100369464" src="./ScratchGO_files/iframe(1).html"
+        style="position: absolute; top: -100px; width: 1px; height: 1px;"></iframe>
+</body>
+
+</html>

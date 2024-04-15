@@ -1,0 +1,120 @@
+const Home = document.getElementById("Home");
+const Search = document.getElementById("Search");
+const Games = document.getElementById("Games");
+const Favorites = document.getElementById("Favorites");
+const Account = document.getElementById("Account");
+const BottomNav = document.getElementById("BottomNav");
+const Tab = document.getElementById("Tab");
+const tabArrow = document.getElementById("tabArrow");
+const BottomNavLayer = document.getElementById("BottomNavLayer");
+const TabScreenContainer = document.getElementById("TabScreenContainer");
+const TabScreen = document.getElementById("TabScreen");
+const TabTab = document.getElementById("TabTab");
+const TabScreenBackground = document.getElementById("TabScreenBackground");
+const GamesSection = document.getElementById("GamesSection");
+const FavoriteSection = document.getElementById("FavoriteSection");
+const AccountSection = document.getElementById("AccountSection");
+const TabTitleText = document.getElementById("TabTitleText");
+const RefreshGames = document.getElementById("refreshGames");
+
+function clickHome(){
+    window.open("https://scratchgo.app/", "_blank");
+}
+
+function clickSearch(){
+    Home.classList.remove("filter-blue");
+    Search.classList.remove("filter-grey");
+    Search.classList.add("filter-blue");
+    Games.classList.remove("filter-blue");
+    Favorites.classList.remove("filter-blue");
+    Account.classList.remove("filter-blue");
+    Tab.classList.remove("tabHide");
+    Tab.classList.remove("tabShadowHide");
+    HideTabs();
+    TimedHideTab();
+}
+
+function clickGames(){
+    Home.classList.remove("filter-blue");
+    Search.classList.remove("filter-blue");
+    Games.classList.add("filter-blue");
+    Games.classList.remove("filter-grey");
+    Favorites.classList.remove("filter-blue");
+    Account.classList.remove("filter-blue");
+    TabTitleText.textContent = "Games";
+    GamesSection.classList.remove("SectionHide");
+    FavoriteSection.classList.add("SectionHide");
+    AccountSection.classList.add("SectionHide");
+    RefreshGames.classList.remove("SectionHide");
+    TabScreen.style = "background-color: #4d96fe";
+    ShowTabs();
+}
+
+function clickFavorites(){
+    Home.classList.remove("filter-blue");
+    Search.classList.remove("filter-blue");
+    Games.classList.remove("filter-blue");
+    Favorites.classList.add("filter-blue");
+    Favorites.classList.remove("filter-grey");
+    Account.classList.remove("filter-blue");
+    RefreshGames.classList.add("SectionHide");
+    FavoriteSection.classList.remove("SectionHide");
+    GamesSection.classList.add("SectionHide");
+    AccountSection.classList.add("SectionHide");
+    TabTitleText.textContent = "Favorites";
+    TabScreen.style = "background-color: #4d96fe";
+    ShowTabs();
+}
+
+function clickAccount(){    
+    Home.classList.remove("filter-blue");
+    Search.classList.remove("filter-blue");
+    Games.classList.remove("filter-blue");
+    Favorites.classList.remove("filter-blue");
+    Account.classList.remove("filter-grey");
+    Account.classList.add("filter-blue");
+    TabTitleText.textContent = "Account";
+    GamesSection.classList.add("SectionHide");
+    FavoriteSection.classList.add("SectionHide");
+    AccountSection.classList.remove("SectionHide");
+    RefreshGames.classList.add("SectionHide");
+    TabScreen.style = "background-color: white";
+    ShowTabs();
+}
+
+function ToggleNavBar(){
+    BottomNav.classList.toggle("navClose");
+    Tab.classList.toggle("tabClose");
+    tabArrow.classList.toggle("tabArrowUp");
+    BottomNavLayer.classList.toggle("navLayerClose")
+    TimedHideTab();
+}
+
+window.onload = function WindowLoad(event){
+    TimedHideTab();
+}
+
+function TimedHideTab(){
+    setTimeout(function(){
+        if(!BottomNav.classList.contains("navClose")){
+            Tab.classList.add("tabHide");
+        }
+    }, 2000); 
+    setTimeout(function(){
+        if(!BottomNav.classList.contains("navClose")){
+            Tab.classList.add("tabShadowHide");
+        }
+    }, 2250); 
+}
+
+function ShowTabs(){
+    TabScreenContainer.classList.add("TabScreenContainerFadeIn");
+    TabTab.classList.add("TabTabShow");
+    TabScreenBackground.classList.add("TabScreenBackgroundShow");
+}
+
+function HideTabs(){
+    TabScreenContainer.classList.remove("TabScreenContainerFadeIn");
+    TabTab.classList.remove("TabTabShow");
+    TabScreenBackground.classList.remove("TabScreenBackgroundShow");
+}

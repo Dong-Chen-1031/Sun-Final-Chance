@@ -1,0 +1,12 @@
+// // Detect orientation change in JavaScript
+var FrameWidth;
+checkScreenResize();
+function checkScreenResize(){
+    if(frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0] != undefined){
+        if(FrameWidth != frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width){
+            afterLoading();
+            FrameWidth = frame.document.getElementsByClassName("stage-header_stage-menu-wrapper_15JJt box_box_2jjDp")[0].style.width;
+        }
+    }
+    window.setTimeout(checkScreenResize, 100);
+  }

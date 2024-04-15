@@ -1,0 +1,275 @@
+// const buttonBox = document.getElementById("buttonBox")
+//frame.vm.postIOData('keyboard',{key:'ArrowUp', keyCode:38, isDown: true});
+// const frame = document.getElementById("frame").contentWindow
+
+const btns = [document.getElementById("btn0"), document.getElementById("btn1"), document.getElementById("btn2"), document.getElementById("btn3"), document.getElementById("btn4"), document.getElementById("btn5")]
+const btnRegisters = [document.getElementById("btn0Text"), document.getElementById("btn1Text"), document.getElementById("btn2Text"), document.getElementById("btn3Text"), document.getElementById("btn4Text"), document.getElementById("btn5Text")]
+const selects = [document.getElementById("0Choice"), document.getElementById("1Choice"), document.getElementById("2Choice"), document.getElementById("3Choice"), document.getElementById("4Choice"), document.getElementById("5Choice")]
+
+var keyDict = {
+    'ArrowUp':38,
+    'ArrowDown':40,
+    'ArrowLeft':37,
+    'ArrowRight':39,
+    ' ':32,
+    'w':87,
+    'a':65,
+    's':83,
+    'd':68,
+    'z':90,
+    'x':88,
+
+    'b':66,
+    'c':67,
+    'e':69,
+    'f':70,
+    'g':71,
+    'h':72,
+
+    'i':73,
+    'j':74,
+    'k':75,
+    'l':76,
+    'm':77,
+    'n':78,
+    'o':79,
+    'p':80,
+    'q':81,
+    'r':82,
+    't':84,
+    'u':85,
+    'v':86,
+    'y':89,
+
+    '0':48,
+    '1':49,
+    '2':50,
+    '3':51,
+    '4':52,
+    '5':53,
+    '6':54,
+    '7':55,
+    '8':56,
+    '9':57
+
+}
+var keySettings = [
+    'ArrowUp', 
+    'ArrowLeft',
+    'ArrowRight',
+    'b',
+    'ArrowDown',
+    'a'
+]
+//console.log(pressStatus)
+var AllTouches = [];
+var hasFired = false
+
+function LoadMappingDescription(keys){
+    for (let i = 0; i < btnRegisters.length; i++) {
+        keySettings = keys;
+        if(keySettings[i] == 'ArrowUp'){
+            btnRegisters[i].innerHTML = "▲"
+        }else if(keySettings[i] == 'ArrowDown'){
+            btnRegisters[i].innerHTML = "▼"
+        }else if(keySettings[i] == 'ArrowLeft'){
+            btnRegisters[i].innerHTML = '<span style="transform: rotate(-90deg); display: inline-block;">▲</span>'
+        }else if(keySettings[i] == 'ArrowRight'){
+            btnRegisters[i].innerHTML = '<span style="transform: rotate(90deg); display: inline-block;">▲</span>'
+        }else if(keySettings[i] == ' '){
+            btnRegisters[i].innerHTML = "[_]"
+        }else{
+            btnRegisters[i].innerHTML = keys[i]
+        }
+        selects[i].value = btnRegisters[i].innerHTML;
+    }
+}
+
+function updateMapping(){
+    for (let i = 0; i < btnRegisters.length; i++) {
+        var CurrentKeyMap = btnRegisters[i].innerHTML
+        if(CurrentKeyMap == "▲"){
+            keySettings[i] = 'ArrowUp'
+        }else if(CurrentKeyMap == "▼"){
+            keySettings[i] = 'ArrowDown'
+        }else if(CurrentKeyMap == '<span style="transform: rotate(-90deg); display: inline-block;">▲</span>'){
+            keySettings[i] = 'ArrowLeft'
+        }else if(CurrentKeyMap == '<span style="transform: rotate(90deg); display: inline-block;">▲</span>'){
+            keySettings[i] = 'ArrowRight'
+        }else if(CurrentKeyMap == "[_]"){
+            keySettings[i] = ' '
+        }else{
+            keySettings[i] = CurrentKeyMap
+        }
+    }
+    // console.log(btnRegisters[0].innerHTML)
+    console.log(keySettings)
+    SaveControls(keySettings);
+}
+
+function clearAllBtnPress(){
+    for (let i = 0; i < btns.length; i++) {
+        if(btns[i].classList.contains('press')){
+            btns[i].classList.toggle('press')
+        }
+    }
+}
+
+function updateTouches(event){
+    if(event.touches.length == 0){
+        //console.log("no touches anymore")
+        clearAllBtnPress()
+    }
+    var pressStatus = [false, false, false, false, false, false]
+    AllTouches = event.touches
+    for (let j = 0; j < AllTouches.length; j++) {
+        for (let i = 0; i < btns.length; i++) {
+            if(!pressStatus[i]){
+                checkBounds(i, AllTouches[j], pressStatus);
+            }
+        }
+    }
+    fireBtns(pressStatus)
+    
+}
+
+function checkBounds(index, touch, pressStatus){
+    var x = touch.clientX;
+    var y = touch.clientY;
+    var rect = btns[index].getBoundingClientRect();
+    if((rect.left < x && x < rect.right ) && (rect.bottom > y && y > rect.top)){
+        pressStatus[index] = true;
+        if(!btns[index].classList.contains('press')){
+            btns[index].classList.toggle('press')
+        }
+    }else{
+        if(btns[index].classList.contains('press')){
+            btns[index].classList.toggle('press')
+        }
+    }
+}
+
+function fireBtns(pressStatus){
+    const keysToFire = []
+    const keysToKill = []
+    for (let i = 0; i < btns.length; i++) {
+        //console.log(i)
+        if(pressStatus[i]){
+            if(!keysToFire.includes(keySettings[i])){
+                keysToFire.push(keySettings[i])
+            }
+        //     //press button with index i
+        //     // frame.vm.postIOData('keyboard',{key:keySettings[i], keyCode:keyDict[keySettings[i]], isDown: true});
+        //     // console.log("key fired for " + keySettings[i])
+        // }else{
+        //     //cancel button with index i
+        //     // frame.vm.postIOData('keyboard',{key:keySettings[i], keyCode:keyDict[keySettings[i]], isDown: false})
+        //     // console.log("key released for " + keySettings[i])
+        }
+    }
+    for (let i = 0; i < keySettings.length; i++){
+        //console.log(i +", " + keySettings[i]+", "+keysToFire)
+        if(!keysToFire.includes(keySettings[i])){
+            if(!keysToKill.includes(keySettings[i])){
+                keysToKill.push(keySettings[i])
+            }
+        }
+    }
+    //console.log(keysToFire)
+    //console.log(keysToKill)
+    for (let i = 0; i < keysToKill.length; i++){
+        frame.vm.postIOData('keyboard',{key:keysToKill[i], keyCode:keyDict[keysToKill[i]], isDown: false})
+    }
+    for (let i = 0; i < keysToFire.length; i++){
+        frame.vm.postIOData('keyboard',{key:keysToFire[i], keyCode:keyDict[keysToFire[i]], isDown: true})
+    }
+}
+
+// buttonBox.addEventListener("ontouchstart", e=>{
+//     ;[...e.changedTouches].forEach(touch => {
+//         for (let i = 0; i < btns.length; i++) {
+//             if(!pressStatus[i]){
+//                 checkBounds(i, touch);
+//             }
+//         }
+//     })
+// })
+
+
+
+buttonBox.ontouchstart = function(event){
+    updateTouches(event)
+}
+  
+buttonBox.ontouchmove = function(event) {
+    updateTouches(event)
+} 
+
+buttonBox.ontouchend = function(event){
+    updateTouches(event)
+}
+
+//failsafe
+
+// btns[0].onpointerdown = function(){
+//     console.log("btn1 failsafe")
+//     frame.vm.postIOData('keyboard',{key:keySettings[0], keyCode:keyDict[keySettings[0]], isDown: true});
+// }
+
+
+// buttonBox.ontouchstart = function(e){
+//     console.log(e)
+//     ;[...e.changedTouches].forEach(touch => {
+//         console.log(touch)
+//         for (let i = 0; i < btns.length; i++) {
+//             console.log(i)
+//             if(!pressStatus[i]){
+//                 if(touch.target == btns[i]){
+//                     pressStatus[i] = true
+//                 }
+//             }
+//         }
+//     })
+//     console.log(pressStatus)
+//     fireBtns()
+//     console.log(pressStatus)
+// }
+
+// buttonBox.ontouchend = function(e) {
+//     console.log(e)
+//     ;[...e.changedTouches].forEach(touch => {
+//         console.log(touch)
+//         for (let i = 0; i < btns.length; i++) {
+//             console.log(i)
+//             if(pressStatus[i]){
+//                 if(touch.target == btns[i]){
+//                     pressStatus[i] = false
+//                 }
+//             }
+//         }
+//     })
+//     console.log(pressStatus)
+//     fireBtns()
+//     console.log(pressStatus)
+// }
+
+// buttonBox.ontouchcancel = function(e) {
+//     console.log(e)
+//     ;[...e.changedTouches].forEach(touch => {
+//         console.log(touch)
+//         for (let i = 0; i < btns.length; i++) {
+//             console.log(i)
+//             if(pressStatus[i]){
+//                 if(touch.target == btns[i]){
+//                     pressStatus[i] = false
+//                 }
+//             }
+//         }
+//     })
+//     console.log(pressStatus)
+//     fireBtns()
+//     console.log(pressStatus)
+// }
+
+// var rect = btns[0].getBoundingClientRect();
+// console.log(rect);

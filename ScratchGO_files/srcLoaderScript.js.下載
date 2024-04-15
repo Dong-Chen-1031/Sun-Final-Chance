@@ -1,0 +1,136 @@
+const iframe = document.getElementById("frame")
+var gameID = "755416315"
+const Des = document.getElementById("descriptionContainer")
+const GameName = document.getElementById("GameName")
+const AuthorName = document.getElementById("AuthorName")
+var OfficialControl;
+if(window.location.hash) {
+    // hash found
+    var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+    //alert (hash);
+    if(/^\d+$/.test(hash)){
+        console.log("hash is number")
+        gameID = hash;
+    }else{
+        console.log("hash is not valid project ID use default error project ID")
+        gameID = "736088939";
+        window.open("#"+"736088939","_self")
+    }
+    gameURL = "turbowarp/embed.html?addons=pause#" + gameID
+    iframe.src = gameURL
+    GetScratchData(gameID);
+    AddPlayedGameLocal(gameID);
+    } else {
+    // No hash found -> load default game
+    window.open("#"+"755416315","_self")
+    gameID = "755416315"
+    iframe.src = "turbowarp/embed.html?addons=pause#755416315"
+
+}
+CurrentGameID = gameID.toString();
+function link(text, href) {
+  return `<a href="${href}" target="_blank"><b>${text}</b></a>`;
+}
+
+String.prototype.parseUsername = function() {
+  return this.replace(/[@]+[A-Za-z0-9-_-]+/g, function(u) {
+      var username = u.replace("@","")
+      return link(u, "https://scratch.mit.edu/users/"+username+"/")
+  });
+};
+
+String.prototype.parseHashtag = function() {
+  return this.replace(/[#]+[A-Za-z0-9-_]+/g, function(t) {
+      var tag = t.replace("#","")
+      return link(t, "https://scratch.mit.edu/search/projects?q="+tag)
+  });
+};
+
+  function FindLinks(input){
+    const urlRegex = /(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))/g;
+
+    const matches = input.match(urlRegex);
+    if(matches!=null){
+      let output = input;
+
+      for(let match of matches){
+        output = output.replace(match, `<a href="${match}" target="_blank"><b>${match}</b></a>`);
+      }
+      console.log(output)
+      return output
+    }else{
+      return input
+    }
+  }
+
+function PopulateDescription(desBox, data){
+  desBox.innerHTML = link(data.title, "https://scratch.mit.edu/projects/"+data.id+"/") + "<div>by "+ link(data.author.username, "https://scratch.mit.edu/users/"+data.author.username+"/") +"</div>" 
+  if(data.instructions!=""){
+    desBox.innerHTML += "<div><b>\nInstructions:</b></div>" + FindLinks(data.instructions).parseUsername().parseHashtag()
+  }
+  if(data.description!=""){
+    desBox.innerHTML += "<div>\n<b>Notes and Credits:</b></div>" + FindLinks(data.description).parseUsername().parseHashtag()
+  }
+  if(data.instructions=="" && data.description==""){
+    desBox.innerHTML += "Project has no description."
+  }
+  document.getElementById("GameName").innerHTML = link(data.title, "https://scratch.mit.edu/projects/"+data.id+"/")
+  document.getElementById("AuthorName").innerHTML = link(data.author.username, "https://scratch.mit.edu/users/"+data.author.username+"/")
+  if(data.instructions.includes("ScratchGO controller settings:")){
+    SetControlsFromDescription(data.instructions);
+    OfficialControl = true;
+  }else if(data.description.includes("ScratchGO controller settings:")){
+    SetControlsFromDescription(data.description);
+    OfficialControl = true;
+  }else{
+    OfficialControl = false;
+  }
+  LoadControls();
+}
+
+function SetControlsFromDescription(Data){
+  //needs to parse entire string to just the array of data we need
+  const regex = /ScratchGO controller settings:\n(.*)/g;
+  const found = Data.match(regex)[0].match(/\[(.*)\]/g);
+  const ControlArray = JSON.parse(found[0]);
+  LoadMappingDescription(ControlArray)
+}
+
+//create XMLHttpRequest object
+const xhr = new XMLHttpRequest()
+//open a get request with the remote server URL
+xhr.open("GET", "https://trampoline.turbowarp.org/proxy/projects/"+gameID)
+//send the Http request
+xhr.send()
+
+//EVENT HANDLERS
+
+//triggered when the response is completed
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    //parse JSON datax`x
+    data = JSON.parse(xhr.responseText)
+    console.log(data)
+    PopulateDescription(Des, data)
+  } else if (xhr.status === 404) {
+    console.log("No records found")
+  }
+}
+
+//triggered when a network-level error occurs with the request
+xhr.onerror = function() {
+  console.log("Network error occurred")
+}
+
+//triggered periodically as the client receives data
+//used to monitor the progress of the request
+xhr.onprogress = function(e) {
+  if (e.lengthComputable) {
+    console.log(`${e.loaded} B of ${e.total} B loaded!`)
+  } else {
+    console.log(`${e.loaded} B loaded!`)
+  }
+}
+
+
+

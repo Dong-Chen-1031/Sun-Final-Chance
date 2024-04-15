@@ -1,0 +1,28 @@
+if(localStorage.getItem('PlayedGames') == null){
+    console.log('Played games is not initiated yet');
+    const tempArray = [];
+    tempArray.push("755416315");
+    localStorage.setItem('PlayedGames', JSON.stringify(tempArray))
+}
+
+function AddPlayedGameLocal(gameID){
+    if(localStorage.getItem('PlayedGames') == null){
+        console.log('Played games is not initiated yet');
+        const tempArray = [];
+        tempArray.push(gameID);
+        localStorage.setItem('PlayedGames', JSON.stringify(tempArray))
+    }else{
+        const PlayedGames = JSON.parse(localStorage.getItem('PlayedGames'));
+        if(PlayedGames.indexOf(gameID) != -1){
+            // doesn't contain this gameID
+            PlayedGames.splice(PlayedGames.indexOf(gameID), 1);
+        }
+        PlayedGames.unshift(gameID);
+        localStorage.setItem('PlayedGames', JSON.stringify(PlayedGames));
+    }
+    UpdateGames();
+}
+
+function SaveLocalControl(keySettings){
+    localStorage.setItem(CurrentGameID, JSON.stringify(keySettings));
+}
